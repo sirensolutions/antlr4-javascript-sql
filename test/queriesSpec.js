@@ -61,7 +61,7 @@ function parseQuery(query) {
   var parser = new antlr4SQL.SQLParser(tokens);
   parser.buildParseTrees = true;
 
-  var context = parser.sql();
+  var context = parser.query_specification();
 
   var parametersParser = new ParametersParser(query);
   antlr4.tree.ParseTreeWalker.DEFAULT.walk(parametersParser, context);

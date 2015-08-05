@@ -8,16 +8,14 @@ based on the antlr4-javascript-sparql module by Szymon Danielczyk.
 
 Parser classes where generated from G4 grammar files using the ANTLR runtime, version 4.5.1.
 
-SQL grammar files taken from the Apache Tajo project, distributed under the Apache 2.0 License.
+The SQL grammar file is Copyright (c) 2014 by Bart Kiers, released under the MIT License; it can be downloaded from the antlr/grammars-v4 repository.
 
 Classes have been generated with the following commands:
 
 ```
-java -Xmx500M -cp "antlr-4.5.1-complete.jar:$CLASSPATH" org.antlr.v4.Tool -Dlanguage=JavaScript grammars/sql/SQLLLexer.g4 -o lib
-mv lib/grammars/sql/SQLLexer.tokens lib/
-java -Xmx500M -cp "antlr-4.5.1-complete.jar:$CLASSPATH" org.antlr.v4.Tool -Dlanguage=JavaScript grammars/sql/SQLParser.g4 -visitor -o lib
-mv lib/grammars/sql/SQL* lib/
+java -Xmx500M -cp "antlr-4.5.1-complete.jar:$CLASSPATH" org.antlr.v4.Tool -Dlanguage=JavaScript grammars/sql/SQL.g4 -o lib
 ```
+
 Then a the following modifications have been made to generated classes:
 
   * each class has been wrapped in a function for dependency injection
@@ -26,8 +24,5 @@ Then a the following modifications have been made to generated classes:
 
 ### How to build
 
-Node is required to build the project.
-
-To build, install all the depencies by running `npm install`, then run `node install` to combine all the files into a single UMD module.
-
-The resulting module is available in `release/antlr4-sql.js`
+To build the project install `npm` and run `npm install`;
+the resulting module is available in `release/antlr4-sql.js`

@@ -1,7 +1,7 @@
 var SQLLexer = require('./lib/SQLLexer.js');
 var SQLParser = require('./lib/SQLParser.js');
-var SQLParserListener = require('./lib/SQLParserListener');
-var SQLParserVisitor = require('./lib/SQLParserVisitor');
+var SQLListener = require('./lib/SQLListener');
+var SQLVisitor = require('./lib/SQLVisitor');
 
 (function (root, factory) {
 
@@ -17,13 +17,14 @@ var SQLParserVisitor = require('./lib/SQLParserVisitor');
     }
 }(this, function (antlr4) {
 
-    var listener = SQLParserListener(antlr4);
+    var listener = SQLListener(antlr4);
+    var visitor = SQLVisitor(antlr4);
 
     return {
       SQLLexer: SQLLexer(antlr4),
-      SQLParser: SQLParser(antlr4, listener), 
-      SQLParserListener: listener,
-      SQLParserVisitor: SQLParserVisitor(antlr4)
+      SQLParser: SQLParser(antlr4, listener, visitor), 
+      SQLListener: listener,
+      SQLVisitor: visitor
     };
 
 }));

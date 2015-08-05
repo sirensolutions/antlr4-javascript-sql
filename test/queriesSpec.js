@@ -4,68 +4,68 @@ var antlr4 = require('antlr4');
 var antlr4SQL = require('../main.js');
 
 
-      /**
-       * Listens for walker events generated while traversing
-       * the first select clause of a query.
-       *
-       * Puts column names and aliases in the `parameters` array,
-       * excluding column wildcards.
-       */
-      function SelectParametersParser(query) {
-        antlr4SQL.SQLListener.call(this);
-        this.parameter = null;
-        this.parameters = [];
-        this.query = query;
-        this.inSelectClause = false;
-        return this;
-      }
+/**
+ * Listens for walker events generated while traversing
+ * the first select clause of a query.
+ *
+ * Puts column names and aliases in the `parameters` array,
+ * excluding column wildcards.
+ */
+function SelectParametersParser(query) {
+  antlr4SQL.SQLListener.call(this);
+  this.parameter = null;
+  this.parameters = [];
+  this.query = query;
+  this.inSelectClause = false;
+  return this;
+}
 
-      SelectParametersParser.prototype = Object.create(antlr4SQL.SQLListener.prototype);
-      SelectParametersParser.prototype.constructor = SelectParametersParser;
+SelectParametersParser.prototype = Object.create(antlr4SQL.SQLListener.prototype);
+SelectParametersParser.prototype.constructor = SelectParametersParser;
 
-      SelectParametersParser.prototype.enterSelect_stmt = function (ctx) {
-        if (this.parameters.length === 0) {
-          this.inSelectClause = true;
-        }
-      };
+SelectParametersParser.prototype.enterSelect_stmt = function (ctx) {
+  if (this.parameters.length === 0) {
+    this.inSelectClause = true;
+  }
+};
 
-      SelectParametersParser.prototype.exitSelect_stmt = function (ctx) {
-        this.inSelectClause = false;
-      };
+SelectParametersParser.prototype.exitSelect_stmt = function (ctx) {
+  this.inSelectClause = false;
+};
 
-      SelectParametersParser.prototype.exitLiteral_value = function (ctx) {
-        this.parameter = null;
-      };
+SelectParametersParser.prototype.exitLiteral_value = function (ctx) {
+  this.parameter = null;
+};
 
-      SelectParametersParser.prototype.enterResult_column  = function (ctx) {
-        if (!this.inSelectClause) {
-          return;
-        }
-        var alias = ctx.column_alias();
-        var parameter;
-        if (alias) {
-          parameter = alias.getText();
-        } else {
-          parameter = ctx.getText();
-          if (parameter === '*' || parameter.substring(parameter.length-2) === '.*') {
-            parameter = null;
-          }
-        }
-        if (parameter) {
-          this.parameter = parameter;
-        }
-      };
+SelectParametersParser.prototype.enterResult_column  = function (ctx) {
+  if (!this.inSelectClause) {
+    return;
+  }
+  var alias = ctx.column_alias();
+  var parameter;
+  if (alias) {
+    parameter = alias.getText();
+  } else {
+    parameter = ctx.getText();
+    if (parameter === '*' || parameter.substring(parameter.length-2) === '.*') {
+      parameter = null;
+    }
+  }
+  if (parameter) {
+    this.parameter = parameter;
+  }
+};
 
-      SelectParametersParser.prototype.exitResult_column  = function (ctx) {
-        if (this.parameter) {
-          this.parameters.push(this.parameter);
-          this.parameter = null;
-        }
+SelectParametersParser.prototype.exitResult_column  = function (ctx) {
+  if (this.parameter) {
+    this.parameters.push(this.parameter);
+    this.parameter = null;
+  }
 
-        if (!this.inSelectClause) {
-          return;
-        }
-      };
+  if (!this.inSelectClause) {
+    return;
+  }
+};
 
 function parseQuery(query) {
   var chars = new antlr4.InputStream(query);

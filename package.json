@@ -1,6 +1,6 @@
 {
   "name": "antlr4-javascript-sql",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "antlr4-javascript-sql UMD",
   "main": "release/antlr4-sql.js",
   "scripts": {

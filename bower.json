@@ -1,0 +1,23 @@
+{
+  "name": "antlr4-javascript-sql",
+  "version": "1.0.0",
+  "homepage": "https://github.com/fabiocorneti/antlr4-javascript-sql",
+  "authors": [
+    "SIREn Solutions <info@siren.solutions>"
+  ],
+  "description": "antlr4-javascript-sql umd module",
+  "main": "release/antlr4-sql.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

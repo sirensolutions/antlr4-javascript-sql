@@ -17,6 +17,7 @@ function SelectParametersParser(query) {
   this.parameters = [];
   this.query = query;
   this.inSelectClause = false;
+  this.ignoreSelectClause = false;
   return this;
 }
 
@@ -24,8 +25,12 @@ SelectParametersParser.prototype = Object.create(antlr4SQL.SQLListener.prototype
 SelectParametersParser.prototype.constructor = SelectParametersParser;
 
 SelectParametersParser.prototype.enterSelect_stmt = function (ctx) {
-  if (this.parameters.length === 0) {
-    this.inSelectClause = true;
+  if (this.inSelectClause) {
+    this.ignoreSelectClause = true;
+  }
+  this.inSelectClause = true;
+  if (this.ignoreSelectClause) {
+    return;
   }
 };
 
@@ -38,7 +43,7 @@ SelectParametersParser.prototype.exitLiteral_value = function (ctx) {
 };
 
 SelectParametersParser.prototype.enterResult_column  = function (ctx) {
-  if (!this.inSelectClause) {
+  if (!this.inSelectClause || this.ignoreSelectClause) {
     return;
   }
   var alias = ctx.column_alias();
@@ -57,13 +62,12 @@ SelectParametersParser.prototype.enterResult_column  = function (ctx) {
 };
 
 SelectParametersParser.prototype.exitResult_column  = function (ctx) {
+  if (!this.inSelectClause || this.ignoreSelectClause) {
+    return;
+  }
   if (this.parameter) {
     this.parameters.push(this.parameter);
     this.parameter = null;
-  }
-
-  if (!this.inSelectClause) {
-    return;
   }
 };
 
@@ -151,6 +155,17 @@ describe('Using the antlr4-sql package', function () {
     it(query9, function () {
       var query = parseQuery(query9);
       expect(query.parameters).to.eql(['count']);
+    });
+
+    var queryNestedSelectIn = 'select company.label ' +
+      'from company ' +
+      'where company.category_code IN ( ' +
+      'select category_code from company ' +
+      'where company.id = 2' +
+      ') ' +
+      'limit 100';
+    it(queryNestedSelectIn, function () {
+      expect(parseQuery(queryNestedSelectIn).parameters).to.eql(['company.label']);
     });
 
   });

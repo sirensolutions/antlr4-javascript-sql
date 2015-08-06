@@ -81,7 +81,7 @@ function parseQuery(query) {
 
   return {
     'parameters': parametersParser.parameters
-  }
+  };
 }
 
 describe('Using the antlr4-sql package', function () {
@@ -92,7 +92,7 @@ describe('Using the antlr4-sql package', function () {
             'FROM currencies, country WHERE country.currency = currency.id';
     it(query1, function () {
       var query = parseQuery(query1);
-      expect(query.parameters).to.eql(['currency.id', 'currencyName', 'country'])
+      expect(query.parameters).to.eql(['currency.id', 'currencyName', 'country']);
     });
 
 
@@ -100,7 +100,7 @@ describe('Using the antlr4-sql package', function () {
             'FROM currencies, country WHERE country.currency = currency.id';
     it(query2, function () {
       var query = parseQuery(query2);
-      expect(query.parameters).to.eql(['currency.id', 'currencyName', 'country'])
+      expect(query.parameters).to.eql(['currency.id', 'currencyName', 'country']);
     });
 
 
@@ -108,7 +108,7 @@ describe('Using the antlr4-sql package', function () {
             'FROM currencies, country WHERE country.currency = currency.id';
     it(query3, function () {
       var query = parseQuery(query3);
-      expect(query.parameters).to.eql(['country'])
+      expect(query.parameters).to.eql(['country']);
     });
 
 
@@ -116,14 +116,14 @@ describe('Using the antlr4-sql package', function () {
             'FROM currencies, country WHERE country.currency = currency.id';
     it(query4, function () {
       var query = parseQuery(query4);
-      expect(query.parameters).to.eql(['country'])
+      expect(query.parameters).to.eql(['country']);
     });
 
 
     var query5 = 'SELECT name FROM (SELECT * FROM currencies)';
     it(query5, function () {
       var query = parseQuery(query5);
-      expect(query.parameters).to.eql(['name'])
+      expect(query.parameters).to.eql(['name']);
     });
 
 
@@ -136,21 +136,21 @@ describe('Using the antlr4-sql package', function () {
     var query7 = 'SELECT name, \'value\' FROM table';
     it(query7, function () {
       var query = parseQuery(query7);
-      expect(query.parameters).to.eql(['name'])
+      expect(query.parameters).to.eql(['name']);
     });
 
 
     var query8 = 'SELECT DISTINCT first_name, last_name FROM people';
     it(query8, function () {
       var query = parseQuery(query8);
-      expect(query.parameters).to.eql(['first_name', 'last_name'])
+      expect(query.parameters).to.eql(['first_name', 'last_name']);
     });
 
 
     var query9 = 'SELECT COUNT(id) AS count FROM people WHERE country = 20';
     it(query9, function () {
       var query = parseQuery(query9);
-      expect(query.parameters).to.eql(['count'])
+      expect(query.parameters).to.eql(['count']);
     });
 
   });

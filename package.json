@@ -1,10 +1,9 @@
 {
   "name": "antlr4-javascript-sql",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "antlr4-javascript-sql UMD",
   "main": "release/antlr4-sql.js",
   "scripts": {
-    "preinstall": "browserify  --ignore-missing main.js -o release/antlr4-sql.js",
     "test": "mocha"
   },
   "repository": {
@@ -23,7 +22,8 @@
   "homepage": "https://github.com/fabiocorneti/antlr4-javascript-sql",
   "devDependencies": {
     "browserify": "^10.2.4",
-    "chai": "^3.2.0"
+    "chai": "^3.2.0",
+    "mocha": "^2.4.5"
   },
   "dependencies": {
     "antlr4": "^4.5.2"

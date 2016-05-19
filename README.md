@@ -22,7 +22,41 @@ Then a the following modifications have been made to generated classes:
   * in `SQLLexer`, `atn` and `decisionToFDA` have been moved inside the constructor
   * in `SQLParser` `atn`, `decisionToFDA`, `sharedContextCache` have been moved inside the constructor; `atn` has been bound to `this` and the `Object.defineProperty` has been commented out
 
-### How to build
+### Usage
 
-To build the project install `npm` and run `npm install`;
-the resulting module is available in `release/antlr4-sql.js`
+
+To build UMD module type:    
+ 
+```    
+npm install -g browserify
+"preinstall": "browserify  --ignore-missing main.js -o release/antlr4-sql.js",
+```
+
+To use with webpack define following shim antlr4-sql.js 
+
+```
+var antlr4 = require('antlr4-base');
+var SQLLexer = require('node_modules/antlr4-javascript-sql/lib/SQLLexer.js');
+var SQLParser = require('node_modules/antlr4-javascript-sql/lib/SQLParser.js');
+var SQLListener = require('node_modules/antlr4-javascript-sql/lib/SQLListener');
+var SQLVisitor = require('node_modules/antlr4-javascript-sql/lib/SQLVisitor');
+
+var listener = SQLListener(antlr4);
+var visitor = SQLVisitor(antlr4);
+
+module.exports = {
+  SQLLexer: SQLLexer(antlr4),
+  SQLParser: SQLParser(antlr4, listener, visitor),
+  SQLListener: listener,
+  SQLVisitor: visitor
+};
+``` 
+
+### Test 
+
+```
+npm install 
+npm test
+```
+
+
